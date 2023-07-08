@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Dashboard</title>
+</head>
+<body>
+    <h1>User Dashboard</h1>
+    <form method="POST" action="/user_dashboard">
+        <input type="text" name="search_query" placeholder="Search Query">
+        <select name="search_type">
+            <option value="categories">Categories</option>
+            <option value="products">Products</option>
+        </select>
+        <input type="submit" value="Search">
+    </form>
+
+    <h2>Categories</h2>
+    <ul>
+        {% for category in categories %}
+            <li>{{ category.name }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Products</h2>
+    <ul>
+        {% for product in products %}
+            <li>
+                {{ product.name }} - ${{ product.price }}
+                <form method="POST" action="/user_dashboard">
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                    <input type="number" name="quantity" value="1" min="1">
+                    <input type="submit" name="add_to_cart" value="Add to Cart">
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Cart</h2>
+    <a href="/cart">View Cart</a>
+</body>
+</html>

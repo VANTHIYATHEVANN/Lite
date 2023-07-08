@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart</title>
+</head>
+<body>
+    <h1>Cart</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+        {% for item in cart_items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>${{ item.price }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.price * item.quantity }}</td>
+                <td>
+                    <form method="POST" action="/cart">
+                        <input type="hidden" name="product_id" value="{{ item.product_id }}">
+                        <input type="submit" name="remove_from_cart" value="Remove">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Total Price: ${{ total_price }}</h2>
+    <a href="/user_dashboard">Continue Shopping</a>
+</body>
+</html>

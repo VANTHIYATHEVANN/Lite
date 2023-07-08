@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+
+    <h2>Add Category</h2>
+    <form method="POST" action="/admin_dashboard">
+        <input type="text" name="category_name" placeholder="Category Name" required>
+        <input type="text" name="category_type" placeholder="Category Type" required>
+        <input type="submit" name="add_category" value="Add Category">
+    </form>
+
+    <h2>Edit/Delete Category</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Actions</th>
+        </tr>
+        {% for category in categories %}
+            <tr>
+                <td>{{ category.name }}</td>
+                <td>{{ category.type }}</td>
+                <td>
+                    <form method="POST" action="/admin_dashboard">
+                        <input type="hidden" name="category_id" value="{{ category.id }}">
+                        <input type="text" name="category_name" placeholder="Category Name" value="{{ category.name }}" required>
+                        <input type="text" name="category_type" placeholder="Category Type" value="{{ category.type }}" required>
+                        <input type="submit" name="edit_category" value="Edit">
+                        <input type="submit" name="delete_category" value="Delete">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Add Product</h2>
+    <form method="POST" action="/admin_dashboard">
+        <input type="text" name="product_name" placeholder="Product Name" required>
+        <input type="number" name="product_price" placeholder="Product Price" step="0.01" required>
+        <input type="date" name="manufacture_date" required>
+        <input type="number" name="available_quantity" placeholder="Available Quantity" required>
+        <select name="category_id">
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" name="add_product" value="Add Product">
+    </form>
+
+    <h2>Edit/Delete Product</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Manufacture Date</th>
+            <th>Available Quantity</th>
+            <th>Category</th>
+            <th>Actions</th>
+        </tr>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>${{ product.price }}</td>
+                <td>{{ product.manufacture_date }}</td>
+                <td>{{ product.available_quantity }}</td>
+                <td>{{ product.category.name }}</td>
+                <td>
+                    <form method="POST" action="/admin_dashboard">
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <input type="text" name="product_name" placeholder="Product Name" value="{{ product.name }}" required>
+                        <input type="number" name="product_price" placeholder="Product Price" step="0.01" value="{{ product.price }}" required>
+                        <input type="date" name="manufacture_date" value="{{ product.manufacture_date }}" required>
+                        <input type="number" name="available_quantity" placeholder="Available Quantity" value="{{ product.available_quantity }}" required>
+                        <select name="category_id">
+                            {% for category in categories %}
+                                <option value="{{ category.id }}" {% if category.id == product.category_id %}selected{% endif %}>{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" name="edit_product" value="Edit">
+                        <input type="submit" name="delete_product" value="Delete">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
